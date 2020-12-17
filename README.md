@@ -6,6 +6,7 @@
 - [Auto-delegación automática](https://github.com/diereysaa/cryptocom-validator-node-chuleta/new/main#auto-delegaci%C3%B3n-autom%C3%A1tica)
 - [Transferir CROs de una cuenta a otra](https://github.com/diereysaa/cryptocom-validator-node-chuleta/new/main#transferir-cros-de-una-cuenta-a-otra)
 - [Comprobar el saldo de una cuenta](https://github.com/diereysaa/cryptocom-validator-node-chuleta/new/main#comprobar-el-saldo-de-una-cuenta)
+- [Cambiar datos de tu propio nodo validador](https://github.com/diereysaa/cryptocom-validator-node-chuleta/new/main#cambiar-datos-de-tu-propio-nodo-validador)
 
 ---
 
@@ -161,8 +162,47 @@ Parámetros:
 
 Para saber el saldo que hay en una cuenta (tuya o de otros) simplemente ejecuta esto:
 ```shell
-chain-maind query bank balances [ADDRESS] --output json | jq
+./chain-maind query bank balances [ADDRESS] --output json | jq
 ```
 Parámetros:
 - `[ADDRESS]` es la dirección (`tcro....`) de la que quieres consultar la cantidad de tCROs/CROs
+
+---
+
+## Cambiar datos de tu propio nodo validador
+
+En alguna circunstancia puede que necesites cambiar algún dato de tu propio nodo validador. 
+
+Una cosa **importante** es que es necesario que el nodo tenga tCROs/CROs disponibles para pagar el GAS de la transacción, así que si estás auto-delegando, posiblemente no tengas nada de tCROs/CROs disponibles. Puedes ir al faucet (https://chain.crypto.com/faucet) y mandarte 10 tCROs/CROs
+
+Para cambiar algún dato, ejecuta:
+```shell
+./chain-maind tx staking edit-validator --from=[LOCAL-KEY] --chain-id="testnet-croeseid-1" --SETTING=NEW-VALUE 
+```
+Parámetros:
+- `[LOCAL-KEY]` es el nombre de tu cuenta, que puedes sacarlo haciendo `./chain-maind keys list`
+- `--chain-id="testnet-croeseid-1"` ahora mismo estamos en la testnet, así que asegúrate de que esto es correcto si hay otra red (mainnet)
+- `--SETTING=NEW-VALUE` es la propiedad que quieras cambiar. Hay muchas:
+```
+  -b, --broadcast-mode string        Transaction broadcasting mode (sync|async|block) (default "sync")
+      --commission-rate string       The new commission rate percentage
+      --details string               The validator's (optional) details (default "[do-not-modify]")
+      --fees string                  Fees to pay along with transaction; eg: 10uatom
+      --from string                  Name or address of private key with which to sign
+      --gas string                   gas limit to set per-transaction; set to "auto" to calculate sufficient gas automatically (default 200000)
+      --gas-adjustment float         adjustment factor to be multiplied against the estimate returned by the tx simulation; if the gas limit is set manually this flag is ignored  (default 1)
+      --gas-prices string            Gas prices in decimal format to determine the transaction fee (e.g. 0.1uatom)
+      --identity string              The (optional) identity signature (ex. UPort or Keybase) (default "[do-not-modify]")
+      --keyring-backend string       Select keyring's backend (os|file|kwallet|pass|test) (default "os")
+      --keyring-dir string           The client Keyring directory; if omitted, the default 'home' directory will be used
+      --memo string                  Memo to send along with transaction
+      --min-self-delegation string   The minimum self delegation required on the validator
+      --moniker string               The validator's name (default "[do-not-modify]")
+      --node string                  <host>:<port> to tendermint rpc interface for this chain (default "tcp://localhost:26657")
+      --security-contact string      The validator's (optional) security contact email (default "[do-not-modify]")
+  -s, --sequence uint                The sequence number of the signing account (offline mode only)
+      --sign-mode string             Choose sign mode (direct|amino-json), this is an advanced feature
+      --timeout-height uint          Set a block timeout height to prevent the tx from being committed past a certain height
+      --website string               The validator's (optional) website (default "[do-not-modify]")
+```
 
