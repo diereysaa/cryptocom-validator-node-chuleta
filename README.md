@@ -4,6 +4,8 @@
 - [Comprobar cantidad delegada](https://github.com/diereysaa/cryptocom-validator-node-chuleta/new/main#comprobar-la-cantidad-delegada)
 - [Recuperar CROs de un nodo al que le delegaste](https://github.com/diereysaa/cryptocom-validator-node-chuleta/new/main#recuperar-cros-de-un-nodo-al-que-le-delegaste)
 - [Auto-delegación automática](https://github.com/diereysaa/cryptocom-validator-node-chuleta/new/main#auto-delegaci%C3%B3n-autom%C3%A1tica)
+- [Transferir CROs de una cuenta a otra](https://github.com/diereysaa/cryptocom-validator-node-chuleta/new/main#transferir-cros-de-una-cuenta-a-otra)
+- [Comprobar el saldo de una cuenta](https://github.com/diereysaa/cryptocom-validator-node-chuleta/new/main#comprobar-el-saldo-de-una-cuenta)
 
 ---
 
@@ -135,11 +137,32 @@ sudo systemctl start node-auto-delegate-rewards.service
 ---
 
 ##### 5.- Por último, si quieres comprobar como va el log, puedes hacerlo con: 
-```
+```shell
 journalctl -u node-auto-delegate-rewards -f
 ```
 
+---
 
+## Transferir CROs de una cuenta a otra
 
+Si necesitas transferir CROs de una cuenta a otra puedes ejecutar esto: 
+```shell
+chain-maind tx bank send [SENDING-ADDRESS] [RECEIVING-ADDRESS] [AMOUNT] --chain-id="testnet-croeseid-1" --gas-prices 0.1basetcro
+```
+Parámetros:
+- `[SENDING-ADDRESS]` es la dirección (`tcro....`) desde la que quieres mandar tus tCROs/CROs (debe ser tuya, por supuesto)
+- `[RECEIVING-ADDRESS]` es la dirección (`tcro....`) a la que quieres REGALAR/mandar tus tCROs/CROs
+- `[AMOUNT]` es la cantidad de tCROs/CROs que quieres mandar. Recuerda poner el nombre de la moneda, ej. "100tcro"
+- `--chain-id="testnet-croeseid-1"` ahora mismo estamos en la testnet, así que asegúrate de que esto es correcto si hay otra red (mainnet)
 
+---
+
+## Comprobar el saldo de una cuenta
+
+Para saber el saldo que hay en una cuenta (tuya o de otros) simplemente ejecuta esto:
+```shell
+chain-maind query bank balances [ADDRESS] --output json | jq
+```
+Parámetros:
+- `[ADDRESS]` es la dirección (`tcro....`) de la que quieres consultar la cantidad de tCROs/CROs
 
